@@ -36,5 +36,22 @@ namespace RunGroopWebApp.Controllers
         }
 
 
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Race race)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(race);
+            }
+
+            _raceRepository.Add(race);
+            return RedirectToAction("Index");
+        }
+
     }
 }
