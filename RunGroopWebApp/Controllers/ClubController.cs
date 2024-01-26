@@ -3,17 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using RunGroopWebApp.Data;
 using RunGroopWebApp.Interfaces;
 using RunGroopWebApp.Models;
+using RunGroopWebApp.ViewModels;
 
 namespace RunGroopWebApp.Controllers
 {
     public class ClubController : Controller
     {
         private readonly IClubRepository _clubRepository;
+        private readonly IPhotoService _photoService;
 
         // Dependency injection
-        public ClubController(IClubRepository clubRepository)
+        public ClubController(IClubRepository clubRepository, IPhotoService photoservice)
         {
-            _clubRepository = clubRepository; 
+            _clubRepository = clubRepository;
+            _photoService = photoservice;
         }
 
         public async Task<IActionResult> Index()
@@ -37,15 +40,37 @@ namespace RunGroopWebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Club club)
+        public async Task<IActionResult> Create(CreateClubViewModel clubViewModel)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(club);
+                var result = await _photoService.AddPhotoAsync(clubViewModel.Image);
+
+                var club = new Club
+                {
+                    Title = clubViewModel.Title,
+                    Description = clubViewModel.Description,
+                    Image = result.Url.ToString(),
+                    Address = new Address
+                    {
+                        Street = clubViewModel.Address.Street,
+                        City = clubViewModel.Address.City,
+                        County = clubViewModel.Address.County,
+                        Postcode = clubViewModel.Address.Postcode
+                    }
+                };
+
+                _clubRepository.Add(club);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Photo upload failed");
             }
 
-            _clubRepository.Add(club);
-            return RedirectToAction("Index");
+            return View(clubViewModel);
+            
+            
         }
     }
 }

@@ -3,18 +3,22 @@ using Microsoft.EntityFrameworkCore;
 using RunGroopWebApp.Data;
 using RunGroopWebApp.Interfaces;
 using RunGroopWebApp.Models;
+using RunGroopWebApp.Repository;
+using RunGroopWebApp.Services;
+using RunGroopWebApp.ViewModels;
 
 namespace RunGroopWebApp.Controllers
 {
     public class RaceController : Controller
     {
         private readonly IRaceRepository _raceRepository;
+        private readonly IPhotoService _photoService;
 
         // Dependency injection
-        public RaceController(IRaceRepository raceRepository)
+        public RaceController(IRaceRepository raceRepository, IPhotoService photoService)
         {
-            _raceRepository = raceRepository
-;
+            _raceRepository = raceRepository;
+            _photoService = photoService;
         }
 
         public async Task<IActionResult> Index()
@@ -42,15 +46,31 @@ namespace RunGroopWebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Race race)
+        public async Task<IActionResult> Create(CreateRaceViewModel raceViewModel)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(race);
+                var result = await _photoService.AddPhotoAsync(raceViewModel.Image);
+
+                var race = new Race
+                {
+                    Title = raceViewModel.Title,
+                    Description = raceViewModel.Description,
+                    Image = result.Url.ToString(),
+                    Address = new Address
+                    {
+                        Street = raceViewModel.Address.Street,
+                        City = raceViewModel.Address.City,
+                        County = raceViewModel.Address.County,
+                        Postcode = raceViewModel.Address.Postcode
+                    }
+                };
+
+                _raceRepository.Add(race);
+                return RedirectToAction("Index");
             }
 
-            _raceRepository.Add(race);
-            return RedirectToAction("Index");
+            return View(raceViewModel);
         }
 
     }
