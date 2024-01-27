@@ -40,6 +40,11 @@ namespace RunGroopWebApp.Repository
             return await _context.Clubs.Include(a => a.Address).FirstOrDefaultAsync(i => i.Id == id);
         }
 
+        public async Task<Club> GetByIdAsyncNoTracking(int id)
+        {
+            return await _context.Clubs.Include(a => a.Address).AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+        }
+
         public async Task<IEnumerable<Club>> GetAllClubsByCity(string city)
         {
             return await _context.Clubs.Where(c => c.Address.City.Contains(city)).ToListAsync();
@@ -53,7 +58,8 @@ namespace RunGroopWebApp.Repository
 
         public bool Update(Club club)
         {
-            throw new NotImplementedException();
+            _context.Update(club);
+            return Save();
         }
     }
 }
