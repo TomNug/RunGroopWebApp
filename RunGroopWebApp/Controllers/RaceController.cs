@@ -73,5 +73,68 @@ namespace RunGroopWebApp.Controllers
             return View(raceViewModel);
         }
 
+        // Find the existing race, populate the form with its data
+        public async Task<IActionResult> Edit(int id)
+        {
+            var race = await _raceRepository.GetByIdAsync(id);
+            if (race == null)
+            {
+                return View("Error");
+            }
+            var raceViewModel = new EditRaceViewModel
+            {
+                Title = race.Title,
+                Description = race.Description,
+                AddressId = race.AddressId,
+                Address = race.Address,
+                URL = race.Image,
+                RaceCategory = race.RaceCategory
+            };
+            return View(raceViewModel);
+        }
+
+        // For the completed submitted form
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, EditRaceViewModel raceViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit race");
+                return View("Edit", raceViewModel);
+            }
+
+            var userRace = await _raceRepository.GetByIdAsyncNoTracking(id);
+
+            if (userRace != null)
+            {
+                try
+                {
+                    await _photoService.DeletePhotoAsync(userRace.Image);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "Could not delete photo");
+                    return View(raceViewModel);
+                }
+                var photoResult = await _photoService.AddPhotoAsync(raceViewModel.Image);
+
+                var race = new Race
+                {
+                    Id = id,
+                    Title = raceViewModel.Title,
+                    Description = raceViewModel.Description,
+                    Image = photoResult.Url.ToString(),
+                    AddressId = raceViewModel.AddressId,
+                    Address = raceViewModel.Address
+                };
+
+                _raceRepository.Update(race);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(raceViewModel);
+            }
+        }
     }
 }
