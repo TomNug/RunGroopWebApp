@@ -51,7 +51,8 @@ namespace RunGroopWebApp.Controllers
                 {
                     Title = clubViewModel.Title,
                     Description = clubViewModel.Description,
-                    Image = result.Url.ToString(),
+                    ImageURL = result.Url.ToString(),
+                    ImagePublicId = result.PublicId.ToString(),
                     Address = new Address
                     {
                         Street = clubViewModel.Address.Street,
@@ -85,7 +86,7 @@ namespace RunGroopWebApp.Controllers
                 Description = club.Description,
                 AddressId = club.AddressId,
                 Address = club.Address,
-                URL = club.Image,
+                URL = club.ImageURL,
                 ClubCategory = club.ClubCategory
             };
             return View(clubViewModel);
@@ -106,7 +107,7 @@ namespace RunGroopWebApp.Controllers
             {
                 try
                 {
-                    await _photoService.DeletePhotoAsync(userClub.Image);
+                    await _photoService.DeletePhotoAsync(userClub.ImagePublicId);
                 }
                 catch (Exception ex)
                 {
@@ -120,7 +121,8 @@ namespace RunGroopWebApp.Controllers
                     Id = id,
                     Title = clubViewModel.Title,
                     Description = clubViewModel.Description,
-                    Image = photoResult.Url.ToString(),
+                    ImageURL = photoResult.Url.ToString(),
+                    ImagePublicId = photoResult.PublicId.ToString(),
                     AddressId = clubViewModel.AddressId,
                     Address = clubViewModel.Address
                 };
@@ -133,6 +135,41 @@ namespace RunGroopWebApp.Controllers
                 return View(clubViewModel);
             }
             
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var clubDetails = await _clubRepository.GetByIdAsync(id);
+            if (clubDetails == null)
+            {
+                return View("Error");
+            }
+            return View(clubDetails);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteClub(int id)
+        {
+            var clubDetails = await _clubRepository.GetByIdAsync(id);
+            if (clubDetails == null)
+            {
+                return View("Error");
+            }
+
+            // Try to delete the image
+            try
+            {
+                await _photoService.DeletePhotoAsync(clubDetails.ImagePublicId);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Could not delete photo");
+                return View(clubDetails);
+            }
+
+            _clubRepository.Delete(clubDetails);
+
+            return RedirectToAction("Index");
         }
     }
 }

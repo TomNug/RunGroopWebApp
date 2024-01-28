@@ -21,7 +21,7 @@ namespace RunGroopWebApp.Data
                         new Club()
                         {
                             Title = "Running Club 1",
-                            Image = "https://www.eatthis.com/wp-content/uploads/sites/4/2020/05/running.jpg?quality=82&strip=1&resize=640%2C360",
+                            ImageURL = "https://www.eatthis.com/wp-content/uploads/sites/4/2020/05/running.jpg?quality=82&strip=1&resize=640%2C360",
                             Description = "This is the description of the first cinema",
                             ClubCategory = ClubCategory.City,
                             Address = new Address()
@@ -35,7 +35,7 @@ namespace RunGroopWebApp.Data
                         new Club()
                         {
                             Title = "Running Club 2",
-                            Image = "https://www.eatthis.com/wp-content/uploads/sites/4/2020/05/running.jpg?quality=82&strip=1&resize=640%2C360",
+                            ImageURL = "https://www.eatthis.com/wp-content/uploads/sites/4/2020/05/running.jpg?quality=82&strip=1&resize=640%2C360",
                             Description = "This is the description of the first cinema",
                             ClubCategory = ClubCategory.Endurance,
                             Address = new Address()
@@ -49,7 +49,7 @@ namespace RunGroopWebApp.Data
                         new Club()
                         {
                             Title = "Running Club 3",
-                            Image = "https://www.eatthis.com/wp-content/uploads/sites/4/2020/05/running.jpg?quality=82&strip=1&resize=640%2C360",
+                            ImageURL = "https://www.eatthis.com/wp-content/uploads/sites/4/2020/05/running.jpg?quality=82&strip=1&resize=640%2C360",
                             Description = "This is the description of the first club",
                             ClubCategory = ClubCategory.Trail,
                             Address = new Address()
@@ -63,7 +63,7 @@ namespace RunGroopWebApp.Data
                         new Club()
                         {
                             Title = "Running Club 3",
-                            Image = "https://www.eatthis.com/wp-content/uploads/sites/4/2020/05/running.jpg?quality=82&strip=1&resize=640%2C360",
+                            ImageURL = "https://www.eatthis.com/wp-content/uploads/sites/4/2020/05/running.jpg?quality=82&strip=1&resize=640%2C360",
                             Description = "This is the description of the first club",
                             ClubCategory = ClubCategory.City,
                             Address = new Address()
@@ -85,7 +85,7 @@ namespace RunGroopWebApp.Data
                         new Race()
                         {
                             Title = "Running Race 1",
-                            Image = "https://www.eatthis.com/wp-content/uploads/sites/4/2020/05/running.jpg?quality=82&strip=1&resize=640%2C360",
+                            ImageURL = "https://www.eatthis.com/wp-content/uploads/sites/4/2020/05/running.jpg?quality=82&strip=1&resize=640%2C360",
                             Description = "This is the description of the first race",
                             RaceCategory = RaceCategory.Marathon,
                             Address = new Address()
@@ -99,7 +99,7 @@ namespace RunGroopWebApp.Data
                         new Race()
                         {
                             Title = "Running Race 2",
-                            Image = "https://www.eatthis.com/wp-content/uploads/sites/4/2020/05/running.jpg?quality=82&strip=1&resize=640%2C360",
+                            ImageURL = "https://www.eatthis.com/wp-content/uploads/sites/4/2020/05/running.jpg?quality=82&strip=1&resize=640%2C360",
                             Description = "This is the description of the first race",
                             RaceCategory = RaceCategory.Ultra,
                             AddressId = 5,

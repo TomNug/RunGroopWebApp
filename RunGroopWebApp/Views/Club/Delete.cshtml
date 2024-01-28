@@ -1,0 +1,75 @@
+﻿@using RunGroopWebApp.Data.Enum
+@model Club
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Are you sure you want to delete this club?</h1>
+
+<form method="post" asp-action="Delete" enctype="multipart/form-data">
+    @* Needs to be hidden. Store AddressId for the Address *@
+    <input type="hidden" value="AddressId" id="AddressId" />
+    <div class="form-group">
+        <label asp-for="Title">Title</label>
+        <input asp-for="Title" class="form-control" placeholder="Title" readonly>
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description">Description</label>
+        <input asp-for="Description" class="form-control" placeholder="Description" readonly>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ClubCategory">Category</label>
+        <select asp-for="ClubCategory" asp-items="@Html.GetEnumSelectList<ClubCategory>()" disabled>
+            <option>--Select--</option>
+        </select>
+        <span asp-validation-for="ClubCategory" class="text-danger"></span>
+    </div>
+
+
+
+    <div class="form-group">
+        <label asp-for="Address.Street">Street</label>
+        <input asp-for="Address.Street" class="form-control" placeholder="Street" readonly>
+        <span asp-validation-for="Address.Street" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address.City">City</label>
+        <input asp-for="Address.City" class="form-control" placeholder="City" readonly>
+        <span asp-validation-for="Address.City" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address.County">County</label>
+        <input asp-for="Address.County" class="form-control" placeholder="County" readonly>
+        <span asp-validation-for="Address.County" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address.Postcode">Postcode</label>
+        <input asp-for="Address.Postcode" class="form-control" placeholder="Postcode" readonly>
+        <span asp-validation-for="Address.Postcode" class="text-danger"></span>
+    </div>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <strong>Error:</strong> @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        </div>
+    }
+
+    <div class="form-group">
+        <label asp-for="ImageURL">Image</label>
+        <input asp-for="ImageURL" type="file" class="form-control" placeholder="Image" disabled>
+        <span asp-validation-for="ImageURL" class="text-danger"></span>
+    </div>
+</form>
+
+<div class="form-group">
+    <form action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Confirm" class="btn btn-danger float-right mt-3" />
+    </form>
+</div>

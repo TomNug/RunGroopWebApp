@@ -56,7 +56,8 @@ namespace RunGroopWebApp.Controllers
                 {
                     Title = raceViewModel.Title,
                     Description = raceViewModel.Description,
-                    Image = result.Url.ToString(),
+                    ImageURL = result.Url.ToString(),
+                    ImagePublicId = result.PublicId.ToString(),
                     Address = new Address
                     {
                         Street = raceViewModel.Address.Street,
@@ -87,7 +88,7 @@ namespace RunGroopWebApp.Controllers
                 Description = race.Description,
                 AddressId = race.AddressId,
                 Address = race.Address,
-                URL = race.Image,
+                URL = race.ImageURL,
                 RaceCategory = race.RaceCategory
             };
             return View(raceViewModel);
@@ -109,7 +110,7 @@ namespace RunGroopWebApp.Controllers
             {
                 try
                 {
-                    await _photoService.DeletePhotoAsync(userRace.Image);
+                    await _photoService.DeletePhotoAsync(userRace.ImagePublicId);
                 }
                 catch (Exception ex)
                 {
@@ -123,7 +124,8 @@ namespace RunGroopWebApp.Controllers
                     Id = id,
                     Title = raceViewModel.Title,
                     Description = raceViewModel.Description,
-                    Image = photoResult.Url.ToString(),
+                    ImageURL = photoResult.Url.ToString(),
+                    ImagePublicId = photoResult.PublicId.ToString(),
                     AddressId = raceViewModel.AddressId,
                     Address = raceViewModel.Address
                 };
@@ -135,6 +137,42 @@ namespace RunGroopWebApp.Controllers
             {
                 return View(raceViewModel);
             }
+        }
+
+        public async Task<IActionResult> Delete (int id)
+        {
+            var raceDetails = await _raceRepository.GetByIdAsync(id);
+            if (raceDetails == null)
+            {
+                return View("Error");
+            }
+
+            return View(raceDetails);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteRace(int id)
+        {
+            var raceDetails = await _raceRepository.GetByIdAsync(id);
+            if (raceDetails == null)
+            {
+                return View("Error");
+            }
+
+            // Try to delete the image
+            try
+            {
+                await _photoService.DeletePhotoAsync(raceDetails.ImagePublicId);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Could not delete photo");
+                return View(raceDetails);
+            }
+
+
+            _raceRepository.Delete(raceDetails);
+            return RedirectToAction("Index");
         }
     }
 }
