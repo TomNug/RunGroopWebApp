@@ -96,9 +96,7 @@ namespace RunGroopWebApp.Controllers
             {
                 Title = race.Title,
                 Description = race.Description,
-                AddressId = race.AddressId,
                 Address = race.Address,
-                URL = race.ImageURL,
                 RaceCategory = race.RaceCategory
             };
             return View(raceViewModel);
@@ -136,8 +134,9 @@ namespace RunGroopWebApp.Controllers
                     Description = raceViewModel.Description,
                     ImageURL = photoResult.Url.ToString(),
                     ImagePublicId = photoResult.PublicId.ToString(),
-                    AddressId = raceViewModel.AddressId,
-                    Address = raceViewModel.Address
+                    AddressId = userRace.AddressId,
+                    Address = raceViewModel.Address,
+                    AppUserId = userRace.AppUserId
                 };
 
                 _raceRepository.Update(race);

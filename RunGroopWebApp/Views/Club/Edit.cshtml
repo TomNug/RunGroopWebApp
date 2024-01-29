@@ -8,8 +8,6 @@
 }
 
 <form method="post" asp-action="Edit" enctype="multipart/form-data">
-    @* Needs to be hidden. Store AddressId for the Address *@
-    <input type="hidden" value="AddressId" id="AddressId" />
     <div class="form-group">
         <label asp-for="Title">Title</label>
         <input asp-for="Title" class="form-control" placeholder="Title">

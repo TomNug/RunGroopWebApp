@@ -93,9 +93,7 @@ namespace RunGroopWebApp.Controllers
             {
                 Title = club.Title,
                 Description = club.Description,
-                AddressId = club.AddressId,
                 Address = club.Address,
-                URL = club.ImageURL,
                 ClubCategory = club.ClubCategory
             };
             return View(clubViewModel);
@@ -132,8 +130,9 @@ namespace RunGroopWebApp.Controllers
                     Description = clubViewModel.Description,
                     ImageURL = photoResult.Url.ToString(),
                     ImagePublicId = photoResult.PublicId.ToString(),
-                    AddressId = clubViewModel.AddressId,
-                    Address = clubViewModel.Address
+                    AddressId = userClub.AddressId,
+                    Address = clubViewModel.Address,
+                    AppUserId = userClub.AppUserId
                 };
 
                 _clubRepository.Update(club);
