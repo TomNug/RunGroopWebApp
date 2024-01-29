@@ -14,11 +14,12 @@
             {
                 <div class="col-nd-4">
                     <div class="card mb-4 bo-shadow">
-                        @* img *@
+                        <img alt="Image profile avatar" src="@item.ProfilePictureUrl" class="avatar">
+                        farts
                         <div class="card-body">
                             <p class="card-text">@item.UserName</p>
-                            <p class="card-text">@item.Mileage</p>
-                            <p class="card-text">@item.Pace</p>
+                            <p class="card-text">Mileage: @item.Mileage</p>
+                            <p class="card-text">Pace: @item.Pace</p>
                             <div class="d-flex justify-content-between aligh-items-center">
                                 <div class="btn-group">
                                     <a type="btn btn-success" asp-controler="User" asp-action="Detail" asp-route-id="@item.Id"
