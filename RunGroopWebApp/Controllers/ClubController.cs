@@ -12,12 +12,14 @@ namespace RunGroopWebApp.Controllers
     {
         private readonly IClubRepository _clubRepository;
         private readonly IPhotoService _photoService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         // Dependency injection
-        public ClubController(IClubRepository clubRepository, IPhotoService photoservice)
+        public ClubController(IClubRepository clubRepository, IPhotoService photoservice, IHttpContextAccessor httpContextAccessor)
         {
             _clubRepository = clubRepository;
             _photoService = photoservice;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> Index()
@@ -37,7 +39,13 @@ namespace RunGroopWebApp.Controllers
 
         public async Task<IActionResult> Create()
         {
-            return View();
+            // Need to get the userId from the server before returning the webpage
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var createClubViewModel = new CreateClubViewModel
+            {
+                AppUserId = currentUserId
+            };
+            return View(createClubViewModel);
         }
 
         [HttpPost]
@@ -53,6 +61,7 @@ namespace RunGroopWebApp.Controllers
                     Description = clubViewModel.Description,
                     ImageURL = result.Url.ToString(),
                     ImagePublicId = result.PublicId.ToString(),
+                    AppUserId = clubViewModel.AppUserId,
                     Address = new Address
                     {
                         Street = clubViewModel.Address.Street,

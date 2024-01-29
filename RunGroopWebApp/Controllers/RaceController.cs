@@ -13,12 +13,14 @@ namespace RunGroopWebApp.Controllers
     {
         private readonly IRaceRepository _raceRepository;
         private readonly IPhotoService _photoService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         // Dependency injection
-        public RaceController(IRaceRepository raceRepository, IPhotoService photoService)
+        public RaceController(IRaceRepository raceRepository, IPhotoService photoService, IHttpContextAccessor httpContextAccessor)
         {
             _raceRepository = raceRepository;
             _photoService = photoService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> Index()
@@ -42,7 +44,14 @@ namespace RunGroopWebApp.Controllers
 
         public async Task<IActionResult> Create()
         {
-            return View();
+            // Need to get the userId from the server before returning the webpage
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var createRaceViewModel = new CreateRaceViewModel
+            {
+                AppUserId = currentUserId
+            };
+
+            return View(createRaceViewModel);
         }
 
         [HttpPost]
@@ -58,6 +67,7 @@ namespace RunGroopWebApp.Controllers
                     Description = raceViewModel.Description,
                     ImageURL = result.Url.ToString(),
                     ImagePublicId = result.PublicId.ToString(),
+                    AppUserId = raceViewModel.AppUserId,
                     Address = new Address
                     {
                         Street = raceViewModel.Address.Street,
