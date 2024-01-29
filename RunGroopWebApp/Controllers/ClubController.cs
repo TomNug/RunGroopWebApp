@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RunGroopWebApp.Data;
+using RunGroopWebApp.Data.Enum;
 using RunGroopWebApp.Interfaces;
 using RunGroopWebApp.Models;
 using RunGroopWebApp.ViewModels;
@@ -39,13 +40,7 @@ namespace RunGroopWebApp.Controllers
 
         public async Task<IActionResult> Create()
         {
-            // Need to get the userId from the server before returning the webpage
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var createClubViewModel = new CreateClubViewModel
-            {
-                AppUserId = currentUserId
-            };
-            return View(createClubViewModel);
+            return View();
         }
 
         [HttpPost]
@@ -53,6 +48,7 @@ namespace RunGroopWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
                 var result = await _photoService.AddPhotoAsync(clubViewModel.Image);
 
                 var club = new Club
@@ -61,7 +57,8 @@ namespace RunGroopWebApp.Controllers
                     Description = clubViewModel.Description,
                     ImageURL = result.Url.ToString(),
                     ImagePublicId = result.PublicId.ToString(),
-                    AppUserId = clubViewModel.AppUserId,
+                    ClubCategory = clubViewModel.ClubCategory,
+                    AppUserId = currentUserId,
                     Address = new Address
                     {
                         Street = clubViewModel.Address.Street,
@@ -132,7 +129,8 @@ namespace RunGroopWebApp.Controllers
                     ImagePublicId = photoResult.PublicId.ToString(),
                     AddressId = userClub.AddressId,
                     Address = clubViewModel.Address,
-                    AppUserId = userClub.AppUserId
+                    AppUserId = userClub.AppUserId,
+                    ClubCategory = clubViewModel.ClubCategory
                 };
 
                 _clubRepository.Update(club);

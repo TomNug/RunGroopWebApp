@@ -44,14 +44,7 @@ namespace RunGroopWebApp.Controllers
 
         public async Task<IActionResult> Create()
         {
-            // Need to get the userId from the server before returning the webpage
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var createRaceViewModel = new CreateRaceViewModel
-            {
-                AppUserId = currentUserId
-            };
-
-            return View(createRaceViewModel);
+            return View();
         }
 
         [HttpPost]
@@ -59,6 +52,7 @@ namespace RunGroopWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
                 var result = await _photoService.AddPhotoAsync(raceViewModel.Image);
 
                 var race = new Race
@@ -67,7 +61,8 @@ namespace RunGroopWebApp.Controllers
                     Description = raceViewModel.Description,
                     ImageURL = result.Url.ToString(),
                     ImagePublicId = result.PublicId.ToString(),
-                    AppUserId = raceViewModel.AppUserId,
+                    RaceCategory = raceViewModel.RaceCategory,
+                    AppUserId = currentUserId,
                     Address = new Address
                     {
                         Street = raceViewModel.Address.Street,
@@ -136,7 +131,8 @@ namespace RunGroopWebApp.Controllers
                     ImagePublicId = photoResult.PublicId.ToString(),
                     AddressId = userRace.AddressId,
                     Address = raceViewModel.Address,
-                    AppUserId = userRace.AppUserId
+                    AppUserId = userRace.AppUserId,
+                    RaceCategory = raceViewModel.RaceCategory
                 };
 
                 _raceRepository.Update(race);
