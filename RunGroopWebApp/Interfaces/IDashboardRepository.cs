@@ -9,6 +9,7 @@ namespace RunGroopWebApp.Interfaces
 
         Task<AppUser> GetUserById(string id);
         Task<AppUser> GetUserWithAddressById(string id);
+        Task<AppUser> GetUserWithAddressByIdNoTracking(string id);
 
         Task<AppUser> GetUserByIdNoTracking(string id);
         bool Update(AppUser user);

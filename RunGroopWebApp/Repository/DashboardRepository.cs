@@ -51,6 +51,14 @@ namespace RunGroopWebApp.Repository
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
+        public async Task<AppUser> GetUserWithAddressByIdNoTracking(string id)
+        {
+            return await _context.Users
+                .Include(u => u.Address)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();

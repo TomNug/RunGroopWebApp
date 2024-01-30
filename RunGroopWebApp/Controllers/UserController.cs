@@ -26,7 +26,7 @@ namespace RunGroopWebApp.Controllers
             List<UserViewModel> result = new List<UserViewModel>();
             foreach(var user in users)
             {
-                if (currentUserId !=  user.Id)
+                if (currentUserId != user.Id)
                 {
                     var userViewModel = new UserViewModel()
                     {

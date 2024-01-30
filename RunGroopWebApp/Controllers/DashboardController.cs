@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RunGroopWebApp.Data;
 using RunGroopWebApp.Interfaces;
 using RunGroopWebApp.Models;
+using RunGroopWebApp.Repository;
 using RunGroopWebApp.ViewModels;
 
 namespace RunGroopWebApp.Controllers
@@ -32,17 +33,6 @@ namespace RunGroopWebApp.Controllers
             dashboardViewModel.Postcode = user.Address?.Postcode;
         }
 
-        private void MapUserEdit(AppUser user, EditUserDashboardViewModel editViewModel,
-            ImageUploadResult photoResult)
-        {
-            user.Pace = editViewModel.Pace;
-            user.Mileage = editViewModel.Mileage;
-            user.ProfileImagePublicId = photoResult.PublicId;
-            user.ProfileImageUrl = photoResult.Url.ToString();
-            user.City = editViewModel.City;
-            user.County = editViewModel.County;
-        }
-
         // Repository calls are async, so whole method must be
         public async Task<IActionResult> Index()
         {
@@ -62,59 +52,37 @@ namespace RunGroopWebApp.Controllers
             return View(dashboardViewModel);
         }
 
-        public async Task<IActionResult> EditUserProfile()
+        public async Task<IActionResult> EditUserProfilePicture()
         {
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-
-            if (currentUserId == null)
-            {
-                return View("Error");
-            }
-            var user = await _dashboardRepository.GetUserById(currentUserId);
-
-            if (user == null)
-            {
-                return View("Error");
-            }
-
-            var editUserDashboardViewModel = new EditUserDashboardViewModel()
-            {
-                Id = currentUserId,
-                Pace = user.Pace,
-                Mileage = user.Mileage,
-                City = user.City,
-                County = user.County
-            };
+            // Create new viewModel to receive image file
+            var editUserDashboardViewModel = new EditUserDashboardProfilePictureViewModel();
 
             return View(editUserDashboardViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditUserProfile(EditUserDashboardViewModel editViewModel)
+        public async Task<IActionResult> EditUserProfilePicture(EditUserDashboardProfilePictureViewModel editProfilePicViewModel)
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to edit profile");
-                return View("EditUserProfile", editViewModel);
+                ModelState.AddModelError("", "Failed to edit profile picture");
+                return View("EditUserProfilePicture", editProfilePicViewModel);
             }
 
-            
-            var user = await _dashboardRepository.GetUserByIdNoTracking(editViewModel.Id);
-
-            // No existing photo
-            if (user.ProfileImageUrl == "" || user.ProfileImageUrl == null)
+            // Find user
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            if (currentUserId == null)
             {
-                // Add a new one
-                var photoResult = await _photoService.AddPhotoAsync(editViewModel.Image);
-
-                MapUserEdit(user, editViewModel, photoResult);
-
-                _dashboardRepository.Update(user);
-                return RedirectToAction("Index");
+                return View("Error");
+            }
+            var user = await _dashboardRepository.GetUserByIdNoTracking(currentUserId);
+            if (user == null)
+            {
+                return View("Error");
             }
 
-            // Existing photo, delete existing
-            else
+            // Delete existing photo
+            if (user.ProfileImagePublicId != null)
             {
                 try
                 {
@@ -123,17 +91,143 @@ namespace RunGroopWebApp.Controllers
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("", "Could not delete photo");
-                    return View(editViewModel);
+                    return View(editProfilePicViewModel);
                 }
-
-                // Add a new one
-                var photoResult = await _photoService.AddPhotoAsync(editViewModel.Image);
-
-                MapUserEdit(user, editViewModel, photoResult);
-
-                _dashboardRepository.Update(user);
-                return RedirectToAction("Index");
             }
+
+            // Add a new one
+            var photoResult = await _photoService.AddPhotoAsync(editProfilePicViewModel.Image);
+
+            user.ProfileImagePublicId = photoResult.PublicId;
+            user.ProfileImageUrl = photoResult.Url.ToString();
+
+            _dashboardRepository.Update(user);
+            return RedirectToAction("Index", "Dashboard");
+        }
+
+
+
+
+
+
+        public async Task<IActionResult> EditUserProfileAddress()
+        {
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+
+            if (currentUserId == null)
+            {
+                return View("Error");
+            }
+            var user = await _dashboardRepository.GetUserWithAddressById(currentUserId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            var editUserDashboardAddressViewModel = new EditUserDashboardAddressViewModel()
+            {
+                Id = currentUserId,
+                Street = user.Address?.Street,
+                City = user.City,
+                County = user.County,
+                Postcode = user.Address?.Postcode
+            };
+            return View(editUserDashboardAddressViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUserProfileAddress(EditUserDashboardAddressViewModel editUserDashboardAddressViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit address");
+                return View("EditUserProfileAddress", editUserDashboardAddressViewModel);
+            }
+
+            // User may not have an address
+            var user = await _dashboardRepository.GetUserWithAddressByIdNoTracking(editUserDashboardAddressViewModel.Id);
+            if (user.Address == null)
+            {
+                // Address is null
+                // Create new Address
+                // Add it to user
+                var newAddress = new Address
+                {
+                    Street = editUserDashboardAddressViewModel.Street,
+                    City = editUserDashboardAddressViewModel.City,
+                    County = editUserDashboardAddressViewModel.County,
+                    Postcode = editUserDashboardAddressViewModel.Postcode
+                };
+                user.Address = newAddress;
+            }
+            else
+            {
+                // Address is not null
+                // Modify address
+                user.Address.Street = editUserDashboardAddressViewModel.Street;
+                user.Address.City = editUserDashboardAddressViewModel.City;
+                user.Address.County = editUserDashboardAddressViewModel.County;
+                user.Address.Postcode = editUserDashboardAddressViewModel.Postcode;
+            }
+
+            _dashboardRepository.Update(user);
+            return RedirectToAction("Index");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public async Task<IActionResult> EditUserProfileStats()
+        {
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+
+            if (currentUserId == null)
+            {
+                return View("Error");
+            }
+            var user = await _dashboardRepository.GetUserWithAddressById(currentUserId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            var editUserDashboardStatsViewModel = new EditUserDashboardStatsViewModel()
+            {
+                Id = currentUserId,
+                Pace = user.Pace,
+                Mileage = user.Mileage
+            };
+            return View(editUserDashboardStatsViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUserProfileStats(EditUserDashboardStatsViewModel editUserDashboardStatsViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit stats");
+                return View("EditUserProfileStats", editUserDashboardStatsViewModel);
+            }
+
+            // User may not have an address
+            var user = await _dashboardRepository.GetUserByIdNoTracking(editUserDashboardStatsViewModel.Id);
+            user.Pace = editUserDashboardStatsViewModel.Pace;
+            user.Mileage = editUserDashboardStatsViewModel.Mileage;
+
+            _dashboardRepository.Update(user);
+            return RedirectToAction("Index");
         }
     }
 }

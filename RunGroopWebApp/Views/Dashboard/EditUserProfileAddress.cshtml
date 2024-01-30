@@ -1,5 +1,5 @@
 ﻿@using RunGroopWebApp.ViewModels
-@model EditUserDashboardViewModel
+@model EditUserDashboardAddressViewModel
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -7,18 +7,12 @@
 @{
 }
 
-<form method="post" asp-action="EditUserProfile" enctype="multipart/form-data">
+<form method="post" asp-action="EditUserProfileAddress">
     <input type="hidden" asp-for="Id" />
     <div class="form-group">
-        <label asp-for="Pace">Pace</label>
-        <input asp-for="Pace" class="form-control" placeholder="Pace" />
-        <span asp-validation-for="Pace" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Mileage">Mileage</label>
-        <input asp-for="Mileage" class="form-control" placeholder="Mileage" />
-        <span asp-validation-for="Mileage" class="text-danger"></span>
+        <label asp-for="Street">Street</label>
+        <input asp-for="Street" class="form-control" placeholder="Street" />
+        <span asp-validation-for="Street" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -34,9 +28,9 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="Image">Profile Image</label>
-        <input asp-for="Image" type="file" class="form-control" placeholder="Image" />
-        <span asp-validation-for="Image" class="text-danger"></span>
+        <label asp-for="Postcode">Postcode</label>
+        <input asp-for="Postcode" class="form-control" placeholder="Postcode" />
+        <span asp-validation-for="Postcode" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn-primary">Submit</button>
