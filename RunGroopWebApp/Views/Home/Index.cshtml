@@ -7,10 +7,11 @@
 <section class="jumbotron text-center">
     <div class="container">
         <h1 class="jumbotron-heading">RunGroops</h1>
-        <p class="lead text-muted">Discover running clubs and races in your local area.</p>
+        <p class="lead text-muted">Discover runners, clubs, and races in your local area.</p>
         <p>
-            <a href="#" class="btn btn-primary my-2">Clubs</a>
-            <a href="#" class="btn btn-secondary my-2">Races</a>
+            <a asp-area="" asp-controller="User" asp-action="Index" class="btn btn-primary my-2">Runners</a>
+            <a asp-area="" asp-controller="Club" asp-action="Index" class="btn btn-secondary my-2">Clubs</a>
+            <a asp-area="" asp-controller="Race" asp-action="Index" class="btn btn-primary my-2">Races</a>
         </p>
     </div>
 </section>
@@ -45,7 +46,7 @@
                                         <a type="btn btn-success" asp-controller="Club" asp-action="Detail" asp-route-id="@item.Id"
                                            class="btn btn-sm btn-outline-secondary">View</a>
                                     </div>
-                                    <small class="text-muted">9 mins</small>
+                                    <small class="text-muted">@item.Address.City</small>
                                 </div>
                             </div>
                         </div>

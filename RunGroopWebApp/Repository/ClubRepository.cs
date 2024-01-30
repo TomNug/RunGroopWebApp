@@ -47,7 +47,8 @@ namespace RunGroopWebApp.Repository
 
         public async Task<IEnumerable<Club>> GetAllClubsByCity(string city)
         {
-            return await _context.Clubs.Where(c => c.Address.City.Contains(city)).ToListAsync();
+            // Include forces Entity to evaluate the nagivation property
+            return await _context.Clubs.Include(c => c.Address).Where(c => c.Address.City.Contains(city)).ToListAsync();
         }
 
         public bool Save()
