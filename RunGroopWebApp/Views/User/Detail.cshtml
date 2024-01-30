@@ -11,26 +11,21 @@
 <div class="container">
 
     <!-- Portfolio Item Heading -->
-    <h1 class="my-4">Page Heading
-        <small>Secondary Text</small>
+    <h1 class="my-4">@Model.UserName
     </h1>
 
     <!-- Portfolio Item Row -->
     <div class="row">
         <div class="col-md-8">
-            @* <img class="img-fluid" src="@Model.ProfilePictureUrl" alt="" /> *@
-            <img alt="Image" src="@Model.ProfilePictureUrl" class="mr-md-5 avatar avatar-xlg">
+            <img class="img-fluid" src="@Model.ProfilePictureUrl" alt="">
         </div>
 
         <div class="col-md-4">
-            <h3 class="my-3">@Model.Mileage</h3>
-            <p>@Model.Pace</p>
+            <h3 class="my-3">Running Stats</h3>
+            <p>Mileage: @Model.Mileage</p>
+            <p>Pace: @Model.Pace</p>
             <h3 class="my-3">Location</h3>
-            <ul>
-                city
-                state
-                club
-            </ul>
+            <p>@Model.City, @Model.County</p>
         </div>
     </div>
 
