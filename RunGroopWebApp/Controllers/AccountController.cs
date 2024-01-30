@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RunGroopWebApp.Data;
+using RunGroopWebApp.Interfaces;
 using RunGroopWebApp.Models;
 using RunGroopWebApp.ViewModels;
 
@@ -11,11 +12,16 @@ namespace RunGroopWebApp.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ApplicationDbContext _context;
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ApplicationDbContext context)
+        private readonly IPhotoService _photoService;
+        public AccountController(UserManager<AppUser> userManager, 
+            SignInManager<AppUser> signInManager, 
+            ApplicationDbContext context,
+            IPhotoService photoService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _photoService = photoService;
         }
         public IActionResult Login()
         {
@@ -81,11 +87,19 @@ namespace RunGroopWebApp.Controllers
                 return View(registerViewModel);
             }
 
+            // Creating new user
+
+            // Create profile picture by adding to Cloudinary
+            var photoResult = await _photoService.AddPhotoAsync(registerViewModel.Image);
+
+
             // No existing user with that email
             var newUser = new AppUser()
             {
                 Email = registerViewModel.EmailAddress,
-                UserName = registerViewModel.EmailAddress
+                UserName = registerViewModel.Username,
+                ProfileImageUrl = photoResult.Url.ToString(),
+                ProfileImagePublicId = photoResult.PublicId
             };
 
             var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);

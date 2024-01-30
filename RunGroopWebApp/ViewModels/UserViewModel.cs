@@ -10,5 +10,6 @@ namespace RunGroopWebApp.ViewModels
         public string ProfilePictureUrl { get; set; }
         public int? Pace { get; set; }
         public int? Mileage { get; set; }
+        public string? City { get; set; }
     }
 }

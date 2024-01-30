@@ -23,13 +23,18 @@
 
         <div class="row">
             <div class="col-md-8 offset-2">
-                <form asp-action="Register">
+                <form method="post" asp-action="Register" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="form-group">
                         <label asp-for="EmailAddress" class="control-label"></label>
                         <input asp-for="EmailAddress" class="form-control" />
                         <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Username" class="control-label"></label>
+                        <input asp-for="Username" class="form-control" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Password" class="control-label"></label>
@@ -40,6 +45,12 @@
                         <label asp-for="ConfirmPassword" class="control-label"></label>
                         <input asp-for="ConfirmPassword" class="form-control" />
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Image">Profile Image</label>
+                        <input asp-for="Image" type="file" class="form-control" placeholder="Image" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
