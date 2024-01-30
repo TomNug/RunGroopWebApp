@@ -23,13 +23,22 @@
                     <img class="img-fluid" src="@Model.ProfilePictureUrl" alt="">
             </div>
 
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Address</h5>
-                    <p class="card-text">@Model.Street</p>
-                    <p class="card-text">@Model.City</p>
-                    <p class="card-text">@Model.County</p>
-                    <p class="card-text">@Model.Postcode</p>
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Address</h5>
+                        <p class="card-text">@Model.Street</p>
+                        <p class="card-text">@Model.City</p>
+                        <p class="card-text">@Model.County</p>
+                        <p class="card-text">@Model.Postcode</p>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Running Stats</h5>
+                        <p class="card-text">Mileage: @Model.Mileage</p>
+                        <p class="card-text">Pace: @Model.Pace</p>
+                    </div>
                 </div>
             </div>
         </div> <!-- /.row -->
@@ -67,7 +76,7 @@
             else
             {
                 <div class="col-md-12" style="padding-left: 50px;">
-                    <p>You do not own any clubs.</p>
+                    <p>You haven't created any clubs yet.</p>
                 </div>
             }
         </div> <!-- /.row -->
@@ -106,7 +115,7 @@
             else
             {
                 <div class="col-md-12" style="padding-left: 50px;">
-                    <p>You do not own any races.</p>
+                    <p>You haven't created any races yet.</p>
                 </div>
             }
         </div> <!-- /.row -->

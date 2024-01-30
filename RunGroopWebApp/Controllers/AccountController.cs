@@ -51,7 +51,7 @@ namespace RunGroopWebApp.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Race");
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 // Password fails
@@ -114,14 +114,22 @@ namespace RunGroopWebApp.Controllers
                 return View(registerViewModel);
             }
 
-            return RedirectToAction("Index", "Race");
+            // Sign in
+            var newUserFromDb = await _userManager.FindByEmailAsync(registerViewModel.EmailAddress);
+            var result = await _signInManager.PasswordSignInAsync(newUserFromDb, registerViewModel.Password, false, false);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return RedirectToAction("Register", "Account");
         }
 
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Race");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

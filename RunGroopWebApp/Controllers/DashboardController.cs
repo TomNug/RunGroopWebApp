@@ -26,10 +26,10 @@ namespace RunGroopWebApp.Controllers
             dashboardViewModel.ProfilePictureUrl = user.ProfileImageUrl;
             dashboardViewModel.Pace = user.Pace;
             dashboardViewModel.Mileage = user.Mileage;
-            dashboardViewModel.Street = user.Address.Street;
-            dashboardViewModel.City = user.Address.City;
-            dashboardViewModel.County = user.Address.County;
-            dashboardViewModel.Postcode = user.Address.Postcode;
+            dashboardViewModel.Street = user.Address?.Street;
+            dashboardViewModel.City = user.Address?.City;
+            dashboardViewModel.County = user.Address?.County;
+            dashboardViewModel.Postcode = user.Address?.Postcode;
         }
 
         private void MapUserEdit(AppUser user, EditUserDashboardViewModel editViewModel,
@@ -82,7 +82,6 @@ namespace RunGroopWebApp.Controllers
                 Id = currentUserId,
                 Pace = user.Pace,
                 Mileage = user.Mileage,
-                //ProfileImageUrl = user.ProfileImageUrl,
                 City = user.City,
                 County = user.County
             };
