@@ -10,28 +10,35 @@ namespace RunGroopWebApp.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
-        public UserController(IUserRepository userRepository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UserController(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet("users")]
         public async Task<IActionResult> Index()
         {
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+
             var users = await _userRepository.GetAllUsersAsync();
             List<UserViewModel> result = new List<UserViewModel>();
             foreach(var user in users)
             {
-                var userViewModel = new UserViewModel()
+                if (currentUserId !=  user.Id)
                 {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Pace = user.Pace,
-                    Mileage = user.Mileage,
-                    ProfilePictureUrl = user.ProfileImageUrl,
-                    City = user.City
-                };
-                result.Add(userViewModel);
+                    var userViewModel = new UserViewModel()
+                    {
+                        Id = user.Id,
+                        UserName = user.UserName,
+                        Pace = user.Pace,
+                        Mileage = user.Mileage,
+                        ProfilePictureUrl = user.ProfileImageUrl,
+                        City = user.City
+                    };
+                    result.Add(userViewModel);
+                }
             }
             return View(result);
         }

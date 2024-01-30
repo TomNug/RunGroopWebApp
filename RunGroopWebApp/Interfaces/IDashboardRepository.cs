@@ -8,6 +8,7 @@ namespace RunGroopWebApp.Interfaces
         Task<List<Club>> GetAllUserClubsAsync();
 
         Task<AppUser> GetUserById(string id);
+        Task<AppUser> GetUserWithAddressById(string id);
 
         Task<AppUser> GetUserByIdNoTracking(string id);
         bool Update(AppUser user);

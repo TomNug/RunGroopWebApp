@@ -11,8 +11,7 @@
 
     <!-- Portfolio Item Heading -->
     <h1 class="=" my-4">
-        Page Heading
-        <small>Secondary Text</small>
+        @Model.Title (@Model.RaceCategory)
     </h1>
 
     <!-- Portfolio Item Row -->
@@ -23,16 +22,17 @@
         </div>
 
         <div class="col-md-4">
-            <h3 class="my-3">@Model.Title</h3>
+            <h3 class="my-3">Details</h3>
             <p>@Model.Description</p>
-            <p>@Model.RaceCategory</p>
-            <h3 class="my-3">Location</h3>
-            <ul>
-                <li>@Model.Address.Street</li>
-                <li>@Model.Address.City</li>
-                <li>@Model.Address.County</li>
-                <li>@Model.Address.Postcode</li>
-            </ul>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Race Location</h5>
+                    <p class="card-text">@Model.Address.Street</p>
+                    <p class="card-text">@Model.Address.City</p>
+                    <p class="card-text">@Model.Address.County</p>
+                    <p class="card-text">@Model.Address.Postcode</p>
+                </div>
+            </div>
         </div>
     </div>
 

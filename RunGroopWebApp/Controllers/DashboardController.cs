@@ -20,10 +20,21 @@ namespace RunGroopWebApp.Controllers
             _photoService = photoService;
         }
 
+        private void MapUserOntoViewModel(AppUser user, DashboardViewModel dashboardViewModel)
+        {
+            dashboardViewModel.UserName = user.UserName;
+            dashboardViewModel.ProfilePictureUrl = user.ProfileImageUrl;
+            dashboardViewModel.Pace = user.Pace;
+            dashboardViewModel.Mileage = user.Mileage;
+            dashboardViewModel.Street = user.Address.Street;
+            dashboardViewModel.City = user.Address.City;
+            dashboardViewModel.County = user.Address.County;
+            dashboardViewModel.Postcode = user.Address.Postcode;
+        }
+
         private void MapUserEdit(AppUser user, EditUserDashboardViewModel editViewModel,
             ImageUploadResult photoResult)
         {
-            //user.Id = editViewModel.Id;
             user.Pace = editViewModel.Pace;
             user.Mileage = editViewModel.Mileage;
             user.ProfileImagePublicId = photoResult.PublicId;
@@ -41,8 +52,13 @@ namespace RunGroopWebApp.Controllers
             var dashboardViewModel = new DashboardViewModel()
             {
                 Races = userRaces,
-                Clubs = userClubs
+                Clubs = userClubs,
             };
+
+            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var user = await _dashboardRepository.GetUserWithAddressById(currentUserId);
+            MapUserOntoViewModel(user, dashboardViewModel);
+            
             return View(dashboardViewModel);
         }
 
