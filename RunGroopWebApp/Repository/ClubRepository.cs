@@ -62,5 +62,10 @@ namespace RunGroopWebApp.Repository
             _context.Update(club);
             return Save();
         }
+
+        public async Task<IEnumerable<Club>> GetNClubsByCityExludingIdAsync(string city, int n, int id)
+        {
+            return await _context.Clubs.Where(c => c.Address.City.Contains(city) && c.Id != id).Take(n).ToListAsync();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿@model Club
+﻿@using RunGroopWebApp.ViewModels
+@model ClubDetailViewModel
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,26 +12,26 @@
 
     <!-- Portfolio Item Heading -->
     <h1 class="my-4">
-        @Model.Title (@Model.ClubCategory)
+        @Model.Club.Title (@Model.Club.ClubCategory)
     </h1>
 
     <!-- Portfolio Item Row -->
     <div class="row">
 
         <div class="col-md-8">
-            <img class="img-fluid" src="@Model.ImageURL" alt="" />
+            <img class="img-fluid" src="@Model.Club.ImageURL" alt="" />
         </div>
 
         <div class="col-md-4">
             <h3 class="my-3">Details</h3>
-            <p>@Model.Description</p>
+            <p>@Model.Club.Description</p>
             <div class="card" style="width: 18rem;">
                  <div class="card-body">
                     <h5 class="card-title">Club Location</h5>
-                    <p class="card-text">@Model.Address.Street</p>
-                    <p class="card-text">@Model.Address.City</p>
-                    <p class="card-text">@Model.Address.County</p>
-                    <p class="card-text">@Model.Address.Postcode</p>
+                    <p class="card-text">@Model.Club.Address.Street</p>
+                    <p class="card-text">@Model.Club.Address.City</p>
+                    <p class="card-text">@Model.Club.Address.County</p>
+                    <p class="card-text">@Model.Club.Address.Postcode</p>
                 </div>
             </div>
         </div>
@@ -38,31 +39,32 @@
 
     <!-- /.row -->
 
-    <!-- Related Projects Row -->
-    <h3 class="my-4">Related Projects</h3>
-
-    <div class="row">
-
-        <div class="col-md-3 col-sm-6 mb-4">
-            <a href="#">
-                <img class="img-fluid" src="https://via.placeholder.com/500x300" alt="" />
-            </a>
+    <!-- Related Clubs Row -->
+    @if (Model.RelatedClubs.Any())
+    {
+        <!-- Related Projects Row -->
+        <h3 class="my-4">Related clubs in @Model.Club.Address.City</h3>
+        <div class="row">
+            @foreach (var item in Model.RelatedClubs)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" src="@item.ImageURL" width="100%" height="225" alt="Card image cap">
+                        <div class="card-body">
+                            <p class="card-text">@item.Title</p>
+                            <p class="card-text">@item.Description</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a type="btn btn-success" asp-controller="Club" asp-action="Detail" asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-outline-secondary">View</a>
+                                </div>
+                                <small class="text-muted">@item.ClubCategory</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-            <a href="#">
-                <img class="img-fluid" src="https://via.placeholder.com/500x300" alt="" />
-            </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-            <a href="#">
-                <img class="img-fluid" src="https://via.placeholder.com/500x300" alt="" />
-            </a>
-        </div>
-
-        
-    </div>
-    <!-- /.row -->
+    }
 </div>
 <!-- /.container -->

@@ -35,7 +35,19 @@ namespace RunGroopWebApp.Controllers
         public async Task<IActionResult> Detail(int id)
         {
             Club club = await _clubRepository.GetByIdAsync(id);
-            return View(club);
+
+            // Related clubs
+            IEnumerable<Club> relatedClubs = await _clubRepository.GetNClubsByCityExludingIdAsync(club.Address.City, 3, id);
+
+            ClubDetailViewModel clubDetailViewModel = new ClubDetailViewModel()
+            {
+                Club = club,
+                RelatedClubs = relatedClubs
+            };
+
+
+
+            return View(clubDetailViewModel);
         }
 
         public async Task<IActionResult> Create()
