@@ -34,11 +34,19 @@ namespace RunGroopWebApp.Controllers
         //  "Conventional route"
         public async Task<IActionResult> Detail(int id)
         {
-            // Entity doesn't explore JOINs by default
-            //  Include forces it to explore the JOINs
-            //  Finds the Addressnreferred to in the Club
+            // Detail race
             Race race = await _raceRepository.GetByIdAsync(id);
-            return View(race);
+
+            // Related races
+            IEnumerable<Race> relatedRaces = await _raceRepository.GetNRacesByCityExludingIdAsync(race.Address.City, 3, id);
+
+            RaceDetailViewModel raceDetailViewModel = new RaceDetailViewModel()
+            {
+                Race = race,
+                RelatedRaces = relatedRaces
+            };
+
+            return View(raceDetailViewModel);
         }
 
 
