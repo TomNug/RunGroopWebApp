@@ -56,8 +56,10 @@
 
         <!-- Portfolio Item Row -->
         <h3 class="display-4 fw-normal">Your Clubs</h3>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-3">
             <a type="button" class="btn btn-primary" asp-area="" asp-controller="Club" asp-action="Create">Create Club</a>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-3">
             @if (Model.Clubs.Any())
             {
                 @foreach (var item in Model.Clubs)
@@ -95,8 +97,10 @@
 
         <!-- Portfolio Item Row -->
         <h3 class="display-4 fw-normal">Your Races</h3>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-3">
             <a type="button" class="btn btn-primary" asp-area="" asp-controller="Race" asp-action="Create">Create Race</a>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-3">
             @if (Model.Races.Any())
             {
                 @foreach (var item in Model.Races)
