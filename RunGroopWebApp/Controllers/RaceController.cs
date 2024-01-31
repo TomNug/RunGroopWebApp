@@ -115,7 +115,7 @@ namespace RunGroopWebApp.Controllers
                 return View("Edit", raceViewModel);
             }
 
-            var userRace = await _raceRepository.GetByIdAsyncNoTracking(id);
+            var userRace = await _raceRepository.GetByIdNoTrackingAsync(id);
 
             if (userRace != null)
             {

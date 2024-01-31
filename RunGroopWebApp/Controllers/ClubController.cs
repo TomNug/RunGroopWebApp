@@ -117,7 +117,7 @@ namespace RunGroopWebApp.Controllers
                 return View("Edit", clubViewModel);
             }
 
-            var userClub = await _clubRepository.GetByIdAsyncNoTracking(id);
+            var userClub = await _clubRepository.GetByIdNoTrackingAsync(id);
 
             if (userClub != null)
             {

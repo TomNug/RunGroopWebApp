@@ -46,7 +46,7 @@ namespace RunGroopWebApp.Controllers
             };
 
             var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
-            var user = await _dashboardRepository.GetUserWithAddressById(currentUserId);
+            var user = await _dashboardRepository.GetUserWithAddressByIdAsync(currentUserId);
             MapUserOntoViewModel(user, dashboardViewModel);
             
             return View(dashboardViewModel);
@@ -75,7 +75,7 @@ namespace RunGroopWebApp.Controllers
             {
                 return View("Error");
             }
-            var user = await _dashboardRepository.GetUserByIdNoTracking(currentUserId);
+            var user = await _dashboardRepository.GetUserByIdNoTrackingAsync(currentUserId);
             if (user == null)
             {
                 return View("Error");
@@ -118,7 +118,7 @@ namespace RunGroopWebApp.Controllers
             {
                 return View("Error");
             }
-            var user = await _dashboardRepository.GetUserWithAddressById(currentUserId);
+            var user = await _dashboardRepository.GetUserWithAddressByIdAsync(currentUserId);
             if (user == null)
             {
                 return View("Error");
@@ -145,7 +145,7 @@ namespace RunGroopWebApp.Controllers
             }
 
             // User may not have an address
-            var user = await _dashboardRepository.GetUserWithAddressByIdNoTracking(editUserDashboardAddressViewModel.Id);
+            var user = await _dashboardRepository.GetUserWithAddressByIdNoTrackingAsync(editUserDashboardAddressViewModel.Id);
             if (user.Address == null)
             {
                 // Address is null
@@ -197,7 +197,7 @@ namespace RunGroopWebApp.Controllers
             {
                 return View("Error");
             }
-            var user = await _dashboardRepository.GetUserWithAddressById(currentUserId);
+            var user = await _dashboardRepository.GetUserWithAddressByIdAsync(currentUserId);
             if (user == null)
             {
                 return View("Error");
@@ -222,7 +222,7 @@ namespace RunGroopWebApp.Controllers
             }
 
             // User may not have an address
-            var user = await _dashboardRepository.GetUserByIdNoTracking(editUserDashboardStatsViewModel.Id);
+            var user = await _dashboardRepository.GetUserByIdNoTrackingAsync(editUserDashboardStatsViewModel.Id);
             user.Pace = editUserDashboardStatsViewModel.Pace;
             user.Mileage = editUserDashboardStatsViewModel.Mileage;
 

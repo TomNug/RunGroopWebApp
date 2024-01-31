@@ -39,7 +39,7 @@ namespace RunGroopWebApp.Controllers
                 homeViewModel.County = ipInfo.Region;
                 if (homeViewModel.City != null)
                 {
-                    homeViewModel.Clubs = await _clubRepository.GetAllClubsByCity(homeViewModel.City);
+                    homeViewModel.Clubs = await _clubRepository.GetAllClubsByCityAsync(homeViewModel.City);
                 }
                 else
                 {
