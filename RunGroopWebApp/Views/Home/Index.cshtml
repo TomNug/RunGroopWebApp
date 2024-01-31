@@ -37,7 +37,9 @@
                 {
                     <div class="col-md-4">
                         <div class="card mb-4 box-shadow">
-                            <img src="@item.ImageURL" class="bd-placeholder-img card-img-top" width="100%" height="225" />
+                            <div class="card-img-top-container">
+                                <img src="@item.ImageURL" class="bd-placeholder-img card-img-top" width="100%" height="225" style="object-fit: cover;" />
+                            </div>
                             <div class="card-body">
                                 <p class="card-text">@item.Title</p>
                                 <p class="card-text">@item.Description</p>
