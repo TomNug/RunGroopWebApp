@@ -28,9 +28,27 @@ namespace RunGroopWebApp.Repository
             return await _context.Users.ToListAsync();
         }
 
+
+        public async Task<IEnumerable<AppUser>> GetAllUsersWithAddressAsync()
+        {
+            return await _context.Users
+                    .Include(u => u.Address)
+                    .ToListAsync();
+        }
+
+
+        
+
         public async Task<AppUser> GetUserByIdAsync(string id)
         {
             return await _context.Users.FindAsync(id);
+        }
+
+        public async Task<AppUser> GetUserByIdWithAddressAsync(string id)
+        {
+            return await _context.Users
+                .Include(u => u.Address)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public bool Save()

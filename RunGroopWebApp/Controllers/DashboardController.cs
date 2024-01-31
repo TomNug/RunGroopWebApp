@@ -128,8 +128,8 @@ namespace RunGroopWebApp.Controllers
             {
                 Id = currentUserId,
                 Street = user.Address?.Street,
-                City = user.City,
-                County = user.County,
+                City = user.Address.City,
+                County = user.Address.County,
                 Postcode = user.Address?.Postcode
             };
             return View(editUserDashboardAddressViewModel);

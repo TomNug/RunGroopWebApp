@@ -22,7 +22,7 @@ namespace RunGroopWebApp.Controllers
         {
             var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
 
-            var users = await _userRepository.GetAllUsersAsync();
+            var users = await _userRepository.GetAllUsersWithAddressAsync();
             List<UserViewModel> result = new List<UserViewModel>();
             foreach(var user in users)
             {
@@ -35,7 +35,7 @@ namespace RunGroopWebApp.Controllers
                         Pace = user.Pace,
                         Mileage = user.Mileage,
                         ProfilePictureUrl = user.ProfileImageUrl,
-                        City = user.City
+                        City = user.Address?.City
                     };
                     result.Add(userViewModel);
                 }
@@ -45,7 +45,7 @@ namespace RunGroopWebApp.Controllers
 
         public async Task<IActionResult> Detail(string id)
         {
-            var user = await _userRepository.GetUserByIdAsync(id);
+            var user = await _userRepository.GetUserByIdWithAddressAsync(id);
             var userDetailViewModel = new UserDetailViewModel()
             {
                 Id = user.Id,
@@ -53,8 +53,8 @@ namespace RunGroopWebApp.Controllers
                 Pace = user.Pace,
                 Mileage = user.Mileage,
                 ProfilePictureUrl = user.ProfileImageUrl,
-                City = user.City,
-                County = user.County
+                City = user.Address?.City,
+                County = user.Address?.County
             };
             return View(userDetailViewModel);
         }

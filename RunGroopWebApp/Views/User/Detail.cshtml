@@ -24,8 +24,12 @@
             <h3 class="my-3">Running Stats</h3>
             <p>Mileage: @Model.Mileage</p>
             <p>Pace: @Model.Pace</p>
-            <h3 class="my-3">Location</h3>
-            <p>@Model.City, @Model.County</p>
+            @if (Model.City != null && Model.County != null)
+            {
+                <h3 class="my-3">Location</h3>
+                <p>@Model.City, @Model.County</p>
+            }
+            
         </div>
     </div>
 
