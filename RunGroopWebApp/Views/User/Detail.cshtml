@@ -35,37 +35,34 @@
 
     <!-- /.row -->
 
-    <!-- Related Projects Row -->
-    <h3 class="my-4">Related Projects</h3>
-
-    <div class="row">
-
-        <div class="col-md-3 col-sm-6 mb-4">
-            <a href="#">
-                <img class="img-fluid" src="https://via.placeholder.com/500x300" alt=""/>
-            </a>
+    <!-- Related Users Row -->
+    @if (Model.RelatedUsers.Any())
+    {
+        <!-- Related Races Row -->
+        <h3 class="my-4">Related races in @Model.City</h3>
+        <div class="row">
+            @foreach (var item in Model.RelatedUsers)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-img-top-container">
+                            <img class="card-img-top" src="@item.ProfileImageUrl" width="100%" height="225" alt="Card image cap" style="object-fit: cover;">
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">@item.UserName</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a type="btn btn-success" asp-controller="User" asp-action="Detail" asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-outline-secondary">View</a>
+                                </div>
+                                <small class="text-muted">@item.Address.City</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-            <a href="#">
-                <img class="img-fluid" src="https://via.placeholder.com/500x300" alt="" />
-            </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-            <a href="#">
-                <img class="img-fluid" src="https://via.placeholder.com/500x300" alt="" />
-            </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-            <a href="#">
-                <img class="img-fluid" src="https://via.placeholder.com/500x300" alt=""/>
-            </a>
-        </div>
-
-
-    </div>
+    }
     <!-- /.row -->
 </div>
 <!-- /.container -->

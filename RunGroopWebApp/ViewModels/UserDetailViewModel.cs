@@ -1,4 +1,6 @@
-﻿namespace RunGroopWebApp.ViewModels
+﻿using RunGroopWebApp.Models;
+
+namespace RunGroopWebApp.ViewModels
 {
     public class UserDetailViewModel
     {
@@ -9,5 +11,6 @@
         public int? Mileage { get; set; }
         public string? City { get; set; }
         public string? County { get; set; }
+        public List<AppUser> RelatedUsers { get; set; }
     }
 }

@@ -36,8 +36,15 @@ namespace RunGroopWebApp.Repository
                     .ToListAsync();
         }
 
+        public async Task<List<AppUser>> GetNUsersByCityIncludingAddressExcludingIdAsync(int n, string city, string id)
+        {
+            return await _context.Users
+                .Where(u => u.Address != null && u.Address.City.Contains(city) && u.Id != id)
+                .Include(u => u.Address)
+                .Take(n)
+                .ToListAsync();
+        }
 
-        
 
         public async Task<AppUser> GetUserByIdAsync(string id)
         {

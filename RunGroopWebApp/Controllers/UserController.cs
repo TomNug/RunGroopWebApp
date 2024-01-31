@@ -3,6 +3,7 @@ using Microsoft.Identity.Client;
 using RunGroopWebApp.Interfaces;
 using RunGroopWebApp.Models;
 using RunGroopWebApp.ViewModels;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace RunGroopWebApp.Controllers
 {
@@ -46,6 +47,14 @@ namespace RunGroopWebApp.Controllers
         public async Task<IActionResult> Detail(string id)
         {
             var user = await _userRepository.GetUserByIdWithAddressAsync(id);
+
+            List<AppUser> relatedUsers = new List<AppUser>();
+
+            if (user.Address != null)
+            {
+                relatedUsers = await _userRepository.GetNUsersByCityIncludingAddressExcludingIdAsync(3, user.Address.City, user.Id);
+            }
+
             var userDetailViewModel = new UserDetailViewModel()
             {
                 Id = user.Id,
@@ -54,7 +63,8 @@ namespace RunGroopWebApp.Controllers
                 Mileage = user.Mileage,
                 ProfilePictureUrl = user.ProfileImageUrl,
                 City = user.Address?.City,
-                County = user.Address?.County
+                County = user.Address?.County,
+                RelatedUsers = relatedUsers
             };
             return View(userDetailViewModel);
         }
