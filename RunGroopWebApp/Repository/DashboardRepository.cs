@@ -34,24 +34,24 @@ namespace RunGroopWebApp.Repository
             return await userRaces.ToListAsync();
         }
 
-        public async Task<AppUser> GetUserById(string id)
+        public async Task<AppUser> GetUserByIdAsync(string id)
         {
             return await _context.Users.FindAsync(id);
         }
 
-        public async Task<AppUser> GetUserByIdNoTracking(string id)
+        public async Task<AppUser> GetUserByIdNoTrackingAsync(string id)
         {
             return await _context.Users.Where(u => u.Id == id).AsNoTracking().FirstOrDefaultAsync();
         }
 
-        public async Task<AppUser> GetUserWithAddressById(string id)
+        public async Task<AppUser> GetUserWithAddressByIdAsync(string id)
         {
             return await _context.Users
                 .Include(u => u.Address)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task<AppUser> GetUserWithAddressByIdNoTracking(string id)
+        public async Task<AppUser> GetUserWithAddressByIdNoTrackingAsync(string id)
         {
             return await _context.Users
                 .Include(u => u.Address)

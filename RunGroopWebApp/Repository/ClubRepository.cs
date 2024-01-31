@@ -40,12 +40,12 @@ namespace RunGroopWebApp.Repository
             return await _context.Clubs.Include(a => a.Address).FirstOrDefaultAsync(i => i.Id == id);
         }
 
-        public async Task<Club> GetByIdAsyncNoTracking(int id)
+        public async Task<Club> GetByIdNoTrackingAsync(int id)
         {
             return await _context.Clubs.Include(a => a.Address).AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
         }
 
-        public async Task<IEnumerable<Club>> GetAllClubsByCity(string city)
+        public async Task<IEnumerable<Club>> GetAllClubsByCityAsync(string city)
         {
             // Include forces Entity to evaluate the nagivation property
             return await _context.Clubs.Include(c => c.Address).Where(c => c.Address.City.Contains(city)).ToListAsync();

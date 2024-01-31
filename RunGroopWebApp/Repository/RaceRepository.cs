@@ -30,7 +30,7 @@ namespace RunGroopWebApp.Repository
             return await _context.Races.ToListAsync();
         }
 
-        public async Task<IEnumerable<Race>> GetAllRacesByCity(string city)
+        public async Task<IEnumerable<Race>> GetAllRacesByCityAsync(string city)
         {
             return await _context.Races.Where(c => c.Address.City.Contains(city)).ToListAsync();
         }
@@ -40,7 +40,7 @@ namespace RunGroopWebApp.Repository
             return await _context.Races.Include(a => a.Address).FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<Race> GetByIdAsyncNoTracking(int id)
+        public async Task<Race> GetByIdNoTrackingAsync(int id)
         {
             return await _context.Races.Include(a => a.Address).AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
         }

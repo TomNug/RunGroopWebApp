@@ -7,11 +7,11 @@ namespace RunGroopWebApp.Interfaces
         Task<List<Race>> GetAllUserRacesAsync();
         Task<List<Club>> GetAllUserClubsAsync();
 
-        Task<AppUser> GetUserById(string id);
-        Task<AppUser> GetUserWithAddressById(string id);
-        Task<AppUser> GetUserWithAddressByIdNoTracking(string id);
+        Task<AppUser> GetUserByIdAsync(string id);
+        Task<AppUser> GetUserWithAddressByIdAsync(string id);
+        Task<AppUser> GetUserWithAddressByIdNoTrackingAsync(string id);
 
-        Task<AppUser> GetUserByIdNoTracking(string id);
+        Task<AppUser> GetUserByIdNoTrackingAsync(string id);
         bool Update(AppUser user);
         bool Save();
     }
