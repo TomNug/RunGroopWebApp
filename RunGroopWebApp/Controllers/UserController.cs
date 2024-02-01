@@ -21,7 +21,11 @@ namespace RunGroopWebApp.Controllers
         [HttpGet("users")]
         public async Task<IActionResult> Index()
         {
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId();
+            var currentUserId = "";
+            if (_httpContextAccessor.HttpContext?.User?.Identity?.Name != null)
+            {
+                currentUserId = _httpContextAccessor.HttpContext?.User?.GetUserId();
+            }
 
             var users = await _userRepository.GetAllUsersWithAddressAsync();
             List<UserViewModel> result = new List<UserViewModel>();
