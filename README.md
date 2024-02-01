@@ -3,7 +3,7 @@ A full-stack ASP.NET MVC web applications created as a social media platform for
 
 Hosted on Azure as an SQL Database and App Service.
 
-[Link](rungroopwebapp.azurewebsites.net)
+[Link](https://rungroopwebapp.azurewebsites.net)
 
 
 
