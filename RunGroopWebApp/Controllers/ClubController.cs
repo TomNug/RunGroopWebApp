@@ -23,6 +23,7 @@ namespace RunGroopWebApp.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        [HttpGet("Clubs")]
         public async Task<IActionResult> Index()
         {
             IEnumerable<Club> clubs = await _clubRepository.GetAllAsync();

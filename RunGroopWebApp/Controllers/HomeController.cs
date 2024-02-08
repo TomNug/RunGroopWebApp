@@ -14,11 +14,13 @@ namespace RunGroopWebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IClubRepository _clubRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public HomeController(ILogger<HomeController> logger, IClubRepository clubRepository)
+        public HomeController(ILogger<HomeController> logger, IClubRepository clubRepository, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _clubRepository = clubRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IActionResult> Index()
@@ -29,7 +31,8 @@ namespace RunGroopWebApp.Controllers
             // Reaching async endpoint
             try
             {
-                string url = "https://ipinfo.io?token=07035dfe9b0105";
+                var ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                string url = "https://ipinfo.io/" + ipAddress + "?token=07035dfe9b0105";
                 var info = new WebClient().DownloadString(url);
                 // Take the JSON and translate into object
                 ipInfo = JsonConvert.DeserializeObject<IPInfo>(info);
@@ -37,6 +40,7 @@ namespace RunGroopWebApp.Controllers
                 ipInfo.Country = myRI1.EnglishName;
                 homeViewModel.City = ipInfo.City;
                 homeViewModel.County = ipInfo.Region;
+                
                 if (homeViewModel.City != null)
                 {
                     homeViewModel.Clubs = await _clubRepository.GetAllClubsByCityAsync(homeViewModel.City);

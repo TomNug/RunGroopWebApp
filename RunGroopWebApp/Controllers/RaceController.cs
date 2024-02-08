@@ -23,6 +23,7 @@ namespace RunGroopWebApp.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        [HttpGet("Races")]
         public async Task<IActionResult> Index()
         {
             IEnumerable<Race> races = await _raceRepository.GetAllAsync();

@@ -20,19 +20,28 @@
     <div class="container">
         <div class="row">
 
-            <h1 class="fw-light">
-                    Running clubs near @Model.City, @Model.County
-            </h1>
-
-            @if (Model.Clubs == null)
+            @if (Model.Clubs == null || Model.Clubs.Count() == 0)
             {
-                <h1 class="fw-light">
-                    There are no running clubs in your area! 
-                    <a asp-area="" asp-controller="Account" asp-action="Login">Login</a> and create one!
-                </h1>
+                @if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <h1 class="fw-light">
+                        There are no running clubs in your area! 
+                        <a asp-area="" asp-controller="Club" asp-action="Create">Create one!</a>
+                    </h1>
+                }
+                else
+                {
+                    <h1 class="fw-light">
+                        There are no running clubs in your area!
+                        <a asp-area="" asp-controller="Account" asp-action="Login">Login</a> and create one!
+                    </h1>
+                }
             }
             else
             {
+                <h1 class="fw-light">
+                    Running clubs near @Model.City, @Model.County
+                </h1>
                 @foreach(var item in Model.Clubs)
                 {
                     <div class="col-md-4">

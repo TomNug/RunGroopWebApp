@@ -18,7 +18,7 @@ namespace RunGroopWebApp.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [HttpGet("users")]
+        [HttpGet("Users")]
         public async Task<IActionResult> Index()
         {
             var currentUserId = "";
